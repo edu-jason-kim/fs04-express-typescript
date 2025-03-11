@@ -4,12 +4,15 @@ import express, {
   RequestHandler,
   Response,
 } from "express";
-import { connect } from "mongoose";
+import { connect, model, Schema } from "mongoose";
 import multer from "multer";
+import { getUsers, saveUser } from "./user";
 
 const app = express();
 const port = 3000;
 const upload = multer({ dest: "uploads/" });
+
+app.use(express.json());
 
 // 1. parameter에 타입적용
 const middleware = (req: Request, res: Response, next: NextFunction) => {
@@ -34,13 +37,23 @@ app.post("/upload", upload.single("file"), (req, res) => {
 });
 
 // MONGODB
+const MONGODB_URI =
+  "mongodb://root:example@localhost:27017/test-app?authSource=admin";
 
-const MONGODB_URI = "mongodb://root:example@localhost:27017/test-app?authSource=admin"
 connect(MONGODB_URI)
-  .then(() => console.log('몽고DB에 연결됐습니다!'))
-  .catch((error) => console.log('몽고DB 연결 실패: ', error))
+  .then(() => console.log("몽고DB에 연결됐습니다!"))
+  .catch((error) => console.log("몽고DB 연결 실패: ", error));
 
+app.post("/users", async (req, res) => {
+  const { name, email, avatar } = req.body;
+  const newUser = await saveUser({ name, email, avatar });
+  res.status(201).json(newUser);
+});
 
+app.get("/users", async (req, res) => {
+  const users = await getUsers();
+  res.status(200).json(users);
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}@@`);

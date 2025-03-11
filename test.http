@@ -1,1 +1,14 @@
 GET http://localhost:3000
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "김선재",
+  "email": "edu.jason.kim@gmail.com",
+  "avatar": "avatar"
+}
+
+###
+GET http://localhost:3000/users
