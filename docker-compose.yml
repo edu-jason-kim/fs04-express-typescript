@@ -12,6 +12,21 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongodb_data:/data/db
+  
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: test-app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 
 volumes:
   mongodb_data:
+  postgres_data:
