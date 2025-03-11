@@ -4,6 +4,7 @@ import express, {
   RequestHandler,
   Response,
 } from "express";
+import { connect } from "mongoose";
 import multer from "multer";
 
 const app = express();
@@ -31,6 +32,15 @@ app.post("/upload", upload.single("file"), (req, res) => {
   console.log(req.file);
   res.send();
 });
+
+// MONGODB
+
+const MONGODB_URI = "mongodb://root:example@localhost:27017/test-app?authSource=admin"
+connect(MONGODB_URI)
+  .then(() => console.log('몽고DB에 연결됐습니다!'))
+  .catch((error) => console.log('몽고DB 연결 실패: ', error))
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}@@`);
