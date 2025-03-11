@@ -1,12 +1,16 @@
+import dotenv from "dotenv";
 import express, {
   NextFunction,
   Request,
   RequestHandler,
   Response,
 } from "express";
-import { connect, model, Schema } from "mongoose";
+import { connect } from "mongoose";
 import multer from "multer";
+import { CreateFileDTO, getFiles, saveFile } from "./file";
 import { getUsers, saveUser } from "./user";
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -53,6 +57,18 @@ app.post("/users", async (req, res) => {
 app.get("/users", async (req, res) => {
   const users = await getUsers();
   res.status(200).json(users);
+});
+
+// Prisma
+app.post("/files", async (req, res) => {
+  const { name, path, size } = req.body as CreateFileDTO;
+  const newFile = await saveFile({ name, path, size });
+  res.status(201).json(newFile);
+});
+
+app.get("/files", async (req, res) => {
+  const files = await getFiles();
+  res.status(200).json(files);
 });
 
 app.listen(port, () => {

@@ -12,3 +12,16 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/users
+
+###
+POST http://localhost:3000/files
+Content-Type: application/json
+
+{
+  "name": "김선재",
+  "path": "edu.jason.kim@gmail.com",
+  "size": 123
+}
+
+###
+GET http://localhost:3000/files
